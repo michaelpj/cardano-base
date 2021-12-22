@@ -45,7 +45,9 @@ library
     Cardano.Crypto.DSIGN.Class
     Cardano.Crypto.DSIGN.EcdsaSecp256k1
     Cardano.Crypto.DSIGN.Ed25519
+    Cardano.Crypto.DSIGN.Ed25519ML
     Cardano.Crypto.DSIGN.Ed448
+    Cardano.Crypto.DSIGNM.Class
     Cardano.Crypto.DSIGN.Mock
     Cardano.Crypto.DSIGN.NeverUsed
     Cardano.Crypto.DSIGN.SchnorrSecp256k1
@@ -61,6 +63,7 @@ library
     Cardano.Crypto.KES.Class
     Cardano.Crypto.KES.CompactSingle
     Cardano.Crypto.KES.CompactSum
+    Cardano.Crypto.KES.ForgetMock
     Cardano.Crypto.KES.Mock
     Cardano.Crypto.KES.NeverUsed
     Cardano.Crypto.KES.Simple
@@ -76,9 +79,11 @@ library
     Cardano.Crypto.Libsodium.MLockedBytes
     Cardano.Crypto.Libsodium.MLockedBytes.Internal
     Cardano.Crypto.Libsodium.UnsafeC
+    Cardano.Crypto.MonadSodium
     Cardano.Crypto.PinnedSizedBytes
-    Cardano.Crypto.SECP256K1.Constants
+    Cardano.Crypto.SafePinned
     Cardano.Crypto.SECP256K1.C
+    Cardano.Crypto.SECP256K1.Constants
     Cardano.Crypto.Seed
     Cardano.Crypto.Util
     Cardano.Crypto.VRF
@@ -104,10 +109,13 @@ library
     , ghc-prim
     , integer-gmp
     , memory
+    , mtl
     , nothunks
     , primitive
+    , random
     , secp256k1-haskell
     , serialise
+    , stm
     , text
     , transformers
     , vector

@@ -42,6 +42,7 @@ library
 
   exposed-modules:      Test.Crypto.DSIGN
                         Test.Crypto.Hash
+                        Test.Crypto.RunIO
                         Test.Crypto.KES
                         Test.Crypto.Util
                         Test.Crypto.VRF
@@ -56,8 +57,10 @@ library
                       , cardano-crypto-praos
                       , cardano-prelude
                       , cborg
+                      , containers
                       , cryptonite
                       , formatting
+                      , mtl
                       , nothunks
                       , pretty-show
                       , QuickCheck
@@ -66,6 +69,8 @@ library
                       , tasty
                       , tasty-quickcheck
                       , criterion
+                      , tasty-hunit
+                      , HUnit
 
 test-suite test-crypto
   import:               base, project-config
@@ -78,7 +83,7 @@ test-suite test-crypto
                       , tasty
                       , tasty-quickcheck
 
-  ghc-options:          -threaded -rtsopts -with-rtsopts=-N
+  -- ghc-options:          -threaded -rtsopts -with-rtsopts=-N
 
 benchmark bench-crypto
   import:               base, project-config
