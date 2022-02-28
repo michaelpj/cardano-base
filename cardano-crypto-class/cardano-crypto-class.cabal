@@ -12,12 +12,14 @@ license-files:
   LICENSE
   NOTICE
 
-author:             IOHK
-maintainer:         operations@iohk.io
-copyright:          2019-2021 IOHK
-category:           Currency
-build-type:         Simple
-extra-source-files: README.md
+author:              IOHK
+maintainer:          operations@iohk.io
+copyright:           2019-2021 IOHK
+category:            Currency
+build-type:          Simple
+extra-source-files:  README.md
+extra-source-files:  cbits/blst.h
+                  ,  cbits/blst_util.c
 
 flag development
   description: Disable `-Werror`
@@ -49,6 +51,8 @@ library
     Cardano.Crypto.DSIGN.Mock
     Cardano.Crypto.DSIGN.NeverUsed
     Cardano.Crypto.DSIGN.SchnorrSecp256k1
+    Cardano.Crypto.EllipticCurve.BLST
+    Cardano.Crypto.EllipticCurve.BLST.C
     Cardano.Crypto.Hash
     Cardano.Crypto.Hash.Blake2b
     Cardano.Crypto.Hash.Class
@@ -112,6 +116,9 @@ library
     , vector
 
   pkgconfig-depends: libsodium -any, libsecp256k1 -any
+
+  extra-libraries: blst
+  c-sources: cbits/blst_util.c
 
 test-suite test-memory-example
   import:         base, project-config

@@ -41,6 +41,7 @@ library
   hs-source-dirs:       src
 
   exposed-modules:      Test.Crypto.DSIGN
+                        Test.Crypto.EllipticCurve
                         Test.Crypto.Hash
                         Test.Crypto.KES
                         Test.Crypto.Util
@@ -58,6 +59,7 @@ library
                       , cborg
                       , cryptonite
                       , formatting
+                      , ghc-prim
                       , nothunks
                       , pretty-show
                       , QuickCheck
@@ -65,7 +67,9 @@ library
                       , secp256k1-haskell
                       , tasty
                       , tasty-quickcheck
+                      , tasty-hunit
                       , criterion
+  extra-libraries: blst
 
 test-suite test-crypto
   import:               base, project-config
@@ -79,6 +83,7 @@ test-suite test-crypto
                       , tasty-quickcheck
 
   ghc-options:          -threaded -rtsopts -with-rtsopts=-N
+  extra-libraries: blst
 
 benchmark bench-crypto
   import:               base, project-config
@@ -91,3 +96,4 @@ benchmark bench-crypto
                       , criterion
 
   ghc-options:          -threaded
+  extra-libraries: blst
