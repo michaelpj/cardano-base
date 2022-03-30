@@ -379,8 +379,6 @@ instance (KESAlgorithm (CompactSumKES h d), OptimizedKESAlgorithm d, HashAlgorit
 deriving instance HashAlgorithm h => Show (VerKeyKES (CompactSumKES h d))
 deriving instance Eq   (VerKeyKES (CompactSumKES h d))
 
-instance (KESAlgorithm d) => NoThunks (SignKeyKES (CompactSumKES h d))
-
 instance ( OptimizedKESAlgorithm d
          , NaCl.SodiumHashAlgorithm h
          , Typeable d
@@ -400,9 +398,13 @@ instance ( OptimizedKESAlgorithm d
       => FromCBOR (VerKeyKES (CompactSumKES h d)) where
   fromCBOR = decodeVerKeyKES
 
+instance (OptimizedKESAlgorithm d) => NoThunks (VerKeyKES  (CompactSumKES h d))
+
 --
 -- SignKey instances
 --
+
+instance (KESAlgorithm d) => NoThunks (SignKeyKES (CompactSumKES h d))
 
 -- deriving instance KESAlgorithm d => Show (SignKeyKES (CompactSumKES h d))
 -- 
@@ -414,8 +416,6 @@ instance ( OptimizedKESAlgorithm d
 -- instance (OptimizedKESAlgorithm d, HashAlgorithm h, Typeable d)
 --       => FromCBOR (SignKeyKES (CompactSumKES h d)) where
 --   fromCBOR = decodeSignKeyKES
-
-instance (OptimizedKESAlgorithm d) => NoThunks (VerKeyKES  (CompactSumKES h d))
 
 --
 -- Sig instances

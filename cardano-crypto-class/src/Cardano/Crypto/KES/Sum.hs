@@ -322,8 +322,6 @@ instance ( KESSignAlgorithm m d
 deriving instance HashAlgorithm h => Show (VerKeyKES (SumKES h d))
 deriving instance Eq   (VerKeyKES (SumKES h d))
 
-instance (KESAlgorithm d) => NoThunks (SignKeyKES (SumKES h d))
-
 instance (KESAlgorithm (SumKES h d), NaCl.SodiumHashAlgorithm h, Typeable d, SizeHash h ~ SeedSizeKES d)
       => ToCBOR (VerKeyKES (SumKES h d)) where
   toCBOR = encodeVerKeyKES
@@ -333,10 +331,14 @@ instance (KESAlgorithm (SumKES h d), NaCl.SodiumHashAlgorithm h, Typeable d, Siz
       => FromCBOR (VerKeyKES (SumKES h d)) where
   fromCBOR = decodeVerKeyKES
 
+instance (KESAlgorithm d) => NoThunks (VerKeyKES  (SumKES h d))
+
 
 --
 -- SignKey instances
 --
+
+instance (KESAlgorithm d) => NoThunks (SignKeyKES (SumKES h d))
 
 -- TODO: might need these
 -- deriving instance KESAlgorithm d => Show (SignKeyKES (SumKES h d))
@@ -349,8 +351,6 @@ instance (KESAlgorithm (SumKES h d), NaCl.SodiumHashAlgorithm h, Typeable d, Siz
 -- instance (KESAlgorithm d, HashAlgorithm h, Typeable d)
 --       => FromCBOR (SignKeyKES (SumKES h d)) where
 --   fromCBOR = decodeSignKeyKES
-
-instance (KESAlgorithm d) => NoThunks (VerKeyKES  (SumKES h d))
 
 --
 -- Sig instances

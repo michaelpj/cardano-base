@@ -152,8 +152,6 @@ instance ( DSIGNMAlgorithm m d -- needed for secure forgetting
 deriving instance DSIGNMAlgorithmBase d => Show (VerKeyKES (SingleKES d))
 deriving instance DSIGNMAlgorithmBase d => Eq   (VerKeyKES (SingleKES d))
 
-instance DSIGNMAlgorithmBase d => NoThunks (SignKeyKES (SingleKES d))
-
 instance DSIGNMAlgorithmBase d => ToCBOR (VerKeyKES (SingleKES d)) where
   toCBOR = encodeVerKeyKES
   encodedSizeExpr _size = encodedVerKeyKESSizeExpr
@@ -161,14 +159,16 @@ instance DSIGNMAlgorithmBase d => ToCBOR (VerKeyKES (SingleKES d)) where
 instance DSIGNMAlgorithmBase d => FromCBOR (VerKeyKES (SingleKES d)) where
   fromCBOR = decodeVerKeyKES
 
+instance DSIGNMAlgorithmBase d => NoThunks (VerKeyKES  (SingleKES d))
+
 
 --
 -- SignKey instances
 --
 
--- deriving instance DSIGNMAlgorithmBase d => Show (SignKeyKES (SingleKES d))
+instance DSIGNMAlgorithmBase d => NoThunks (SignKeyKES (SingleKES d))
 
-instance DSIGNMAlgorithmBase d => NoThunks (VerKeyKES  (SingleKES d))
+-- deriving instance DSIGNMAlgorithmBase d => Show (SignKeyKES (SingleKES d))
 
 --
 -- Sig instances

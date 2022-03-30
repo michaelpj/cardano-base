@@ -195,8 +195,6 @@ instance (KESAlgorithm (CompactSingleKES d), DSIGNMAlgorithmBase d) => Optimized
 deriving instance DSIGNMAlgorithmBase d => Show (VerKeyKES (CompactSingleKES d))
 deriving instance DSIGNMAlgorithmBase d => Eq   (VerKeyKES (CompactSingleKES d))
 
-instance DSIGNMAlgorithmBase d => NoThunks (SignKeyKES (CompactSingleKES d))
-
 instance DSIGNMAlgorithmBase d => ToCBOR (VerKeyKES (CompactSingleKES d)) where
   toCBOR = encodeVerKeyKES
   encodedSizeExpr _size = encodedVerKeyKESSizeExpr
@@ -204,14 +202,16 @@ instance DSIGNMAlgorithmBase d => ToCBOR (VerKeyKES (CompactSingleKES d)) where
 instance DSIGNMAlgorithmBase d => FromCBOR (VerKeyKES (CompactSingleKES d)) where
   fromCBOR = decodeVerKeyKES
 
+instance DSIGNMAlgorithmBase d => NoThunks (VerKeyKES  (CompactSingleKES d))
+
 
 --
 -- SignKey instances
 --
 
--- deriving instance DSIGNMAlgorithmBase d => Show (SignKeyKES (CompactSingleKES d))
+instance DSIGNMAlgorithmBase d => NoThunks (SignKeyKES (CompactSingleKES d))
 
-instance DSIGNMAlgorithmBase d => NoThunks (VerKeyKES  (CompactSingleKES d))
+-- deriving instance DSIGNMAlgorithmBase d => Show (SignKeyKES (CompactSingleKES d))
 
 --
 -- Sig instances
