@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
@@ -23,8 +24,10 @@ import Cardano.Crypto.DSIGN (
   MockDSIGN, 
   Ed25519DSIGN, 
   Ed448DSIGN,
+#ifdef SECP256K1
   EcdsaSecp256k1DSIGN,
   SchnorrSecp256k1DSIGN,
+#endif
   DSIGNAlgorithm (VerKeyDSIGN,
                   SignKeyDSIGN,
                   SigDSIGN,
@@ -84,6 +87,7 @@ ed25519SigGen = defaultSigGen
 ed448SigGen :: Gen (SigDSIGN Ed448DSIGN)
 ed448SigGen = defaultSigGen
 
+#ifdef SECP256K1
 secp256k1SigGen :: Gen (SigDSIGN EcdsaSecp256k1DSIGN)
 secp256k1SigGen = do 
   msg <- genSECPMsg
@@ -97,6 +101,7 @@ genSECPMsg = Gen.suchThatMap go SECP.msg
   where
     go :: Gen ByteString
     go = GHC.fromListN 32 <$> replicateM 32 arbitrary
+#endif
 
 defaultVerKeyGen :: forall (a :: Type) . 
   (DSIGNAlgorithm a) => Gen (VerKeyDSIGN a)
@@ -126,8 +131,10 @@ tests =
     [ testDSIGNAlgorithm mockSigGen (arbitrary @Message) "MockDSIGN"
     , testDSIGNAlgorithm ed25519SigGen (arbitrary @Message) "Ed25519DSIGN"
     , testDSIGNAlgorithm ed448SigGen (arbitrary @Message) "Ed448DSIGN"
+#ifdef SECP256K1
     , testDSIGNAlgorithm secp256k1SigGen genSECPMsg "EcdsaSecp256k1DSIGN"
     , testDSIGNAlgorithm schnorrSigGen (arbitrary @Message) "SchnorrSecp256k1DSIGN"
+#endif
     ]
 
 testDSIGNAlgorithm :: forall (v :: Type) (a :: Type).
