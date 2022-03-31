@@ -23,13 +23,16 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
+    - uses: msys2/setup-msys2@v2
+      if: matrix.os == 'windows-latest'
+      with:
+        update: true
+        install: >-
+          autotools
+
     - name: Install pkgconfiglite (Windows)
       if: matrix.os == 'windows-latest'
       run: choco install -y pkgconfiglite
-
-    - name: Install libsodium (MacOS)
-      if: matrix.os == 'macos-latest'
-      run: brew install libsodium
 
     - name: Install secp256k1 (MacOS)
       if: matrix.os == 'macos-latest'
@@ -47,13 +50,31 @@ jobs:
         sudo make install
         cd ../..
 
-    - name: Install libsodium (Linux)
-      if: matrix.os == 'ubuntu-latest'
+    - name: Install secp256k1 (Windows, part 1)
+      if: matrix.os == 'windows-latest'
       run: |
-        sudo apt-get update
-        sudo apt-get -y install libsodium23 libsodium-dev
-        sudo apt-get -y remove --purge software-properties-common
-        sudo apt-get -y autoremove
+        mkdir secp256k1-sources
+        cd secp256k1-sources
+        git clone https://github.com/bitcoin-core/secp256k1.git
+        cd secp256k1
+        git reset --hard $SECP256K1_REF
+
+    - name: Install secp256k1 (Windows, part 2)
+      if: matrix.os == 'windows-latest'
+      shell: msys2 {0}
+      run: |
+        cd secp256k1-sources/secp256k1
+        ./autogen.sh
+
+    - name: Install secp256k1 (Windows, part 3)
+      if: matrix.os == 'windows-latest'
+      run: |
+        cd secp256k1-sources/secp256k1
+        ./configure --enable-module-schnorrsig --enable-experimental
+        make
+        make check
+        sudo make install
+        cd ../..
 
     - name: Install secp256k1 (Linux)
       if: matrix.os == 'ubuntu-latest'
@@ -70,6 +91,18 @@ jobs:
         make check
         sudo make install
         cd ../..
+
+    - name: Install libsodium (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install libsodium23 libsodium-dev
+        sudo apt-get -y remove --purge software-properties-common
+        sudo apt-get -y autoremove
+
+    - name: Install libsodium (MacOS)
+      if: matrix.os == 'macos-latest'
+      run: brew install libsodium
 
     - name: Install libsodium (Windows)
       if: matrix.os == 'windows-latest'
