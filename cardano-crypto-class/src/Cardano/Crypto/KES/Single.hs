@@ -122,7 +122,8 @@ instance ( DSIGNMAlgorithm m d -- needed for secure forgetting
     -- Core algorithm operations
     --
 
-    signKES ctxt _t a (SignKeySingleKES sk) =
+    signKES ctxt t a (SignKeySingleKES sk) =
+        assert (t == 0) $
         SigSingleKES <$> signDSIGNM ctxt a sk
 
     updateKES _ctx (SignKeySingleKES _sk) _to = return Nothing
