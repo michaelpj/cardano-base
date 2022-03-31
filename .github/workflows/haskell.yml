@@ -118,10 +118,13 @@ jobs:
       run: cabal update
 
     - name: Cabal Configure
-      run: cabal configure --enable-tests --enable-benchmarks --write-ghc-environment-files=always
+      run: 
+        | cabal configure --enable-tests --enable-benchmarks --write-ghc-environment-files=always
 
     - name: Record dependencies
       run: |
+        cat cabal.project
+        cat cabal.project.local
         cat dist-newstyle/cache/plan.json | jq -r '."install-plan"[].id' | sort | uniq > dependencies.txt
 
     - name: Set cache version
